@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/j-poff/skrypt/issues"
   },
-  "homepage": "https://github.com/j-poff/skrypt#readme"
+  "homepage": "https://github.com/j-poff/skrypt#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
 }
