@@ -8,15 +8,15 @@ app.set('view engine', 'pug');
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-    res.send('Hello SKRYPT!');
+    res.render('base', {title: 'Index'});
 });
 
 app.get('/home', (req, res) => {
-    res.render('base', { title: 'Hey', message: 'Hello there!' });
+    res.render('home', { title: 'Hey', message: 'Home Page' });
 });
 
 app.get('/profile', (req, res) => {
-    res.send('User profile page');
+    res.render('profile', { title: 'Profile', message: 'User Profile' });
 });
 
 app.listen(3000, () => {
