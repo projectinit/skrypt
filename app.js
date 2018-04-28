@@ -3,10 +3,20 @@ const app = express();
 //const pgp = require('pg-promise')(/*options*/);
 //const db = pgp('postgres://username:password@host:port/database');
 
+app.set('views', './views');
+app.set('view engine', 'pug');
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
     res.send('Hello SKRYPT!');
+});
+
+app.get('/home', (req, res) => {
+    res.render('base', { title: 'Hey', message: 'Hello there!' });
+});
+
+app.get('/profile', (req, res) => {
+    res.send('User profile page');
 });
 
 app.listen(3000, () => {
