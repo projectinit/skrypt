@@ -4,7 +4,7 @@ const app = express();
 //const db = pgp('postgres://username:password@host:port/database');
 
 app.set('views', './views');
-app.set('view engine', 'pug');
+app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
