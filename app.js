@@ -12,11 +12,11 @@ app.get('/', (req, res) => {
 });
 
 app.get('/home', (req, res) => {
-    res.render('home', { title: 'Hey', message: 'Home Page' });
+    res.render('home', { title: 'User Home', username: 'Bob' });
 });
 
 app.get('/profile', (req, res) => {
-    res.render('profile', { title: 'Profile', message: 'User Profile' });
+    res.render('profile', { title: 'User Profile', username: 'Bob' });
 });
 
 app.listen(3000, () => {
