@@ -8,10 +8,6 @@ app.set('view engine', 'ejs');
 app.use(express.static('public'));
 
 app.get('/', (req, res) => {
-    res.render('base', {title: 'Index'});
-});
-
-app.get('/home', (req, res) => {
     res.render('home', { title: 'User Home', username: 'Bob' });
 });
 
