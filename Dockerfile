@@ -2,5 +2,5 @@ from node:9.11
 ADD . /code
 WORKDIR /code
 RUN npm install
-ENTRYPOINT [ "node" ]
-CMD [ "app.js" ]
+RUN npm install -g nodemon
+CMD [ "node", "app.js" ]
