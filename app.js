@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+var port = process.env.PORT || 3000;
 //const pgp = require('pg-promise')(/*options*/);
 //const db = pgp('postgres://username:password@host:port/database');
 
@@ -15,6 +16,6 @@ app.get('/profile', (req, res) => {
     res.render('profile', { title: 'User Profile', username: 'Bob' });
 });
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log('listening on port 3000');
 });
