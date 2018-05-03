@@ -7,3 +7,18 @@ services:
       - "3000:3000"
     volumes:
       - .:/code
+
+  db:
+    image: mysql:5.7
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: skrypt_local
+      MYSQL_USER: skrypt
+      MYSQL_PASSWORD: skrypt
+    ports:
+      - "3306:3306"
+    volumes:
+      - skrypt_db_data:/var/lib/mysql
+
+volumes:
+  skrypt_db_data:
