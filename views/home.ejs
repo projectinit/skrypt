@@ -1,15 +1,53 @@
-<!DOCTYPE html>
-<!-- user home page (with feed/activity) -->
+<!doctype html>
 <html>
-<head>
-    <% include head %>
-    <title><%=title%></title>
-</head>
-<body>
-    <% include nav %>
-    <div class="container">
-        <h1>Welcome home, <%=username%></h1>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>SKRYPT</title>
+        <link rel="stylesheet" href="style.css">
+        <link rel="author" href="humans.txt">
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" integrity="sha384-DNOHZ68U8hZfKXOrtjWvjxusGo9WQnrNx2sqG0tfsghAvtVlRW3tvkXWZh58N9jp" crossorigin="anonymous">
+
+    </head>
+    <body>
+        <div class="header">
+          <a href="logo (1).png" class="logo">
+            <img src="logo (1).png" style="width: 175px; height: 35px; border: 0;">
+          </a>
+          <div class="header-right">
+            <!-- <a class="active" href="#home">Home</a>
+            <a href="#contact">Contact</a>
+            <a href="#about">About</a> -->
+            <i class="fas fa-user fa-3x"></i> 
+          </div>
+        </div>
+
+<div class="text-field">
+           <form action="/action_page.php">
+            
+  <fieldset>
+
+    <legend>Personal information:</legend>
+    <i class="fas fa-user fa-10x"></i>  
+    <div class="textboxes">
+      First name:<br>
+      <input type="text" name="firstname" value="First"><br>
+      Last name:<br>
+      <input type="text" name="lastname" value="Last"><br><br>
+      <button class="button">
+      <input type="submit" value="Submit">
+      </button>
     </div>
-    <% include footer %>
-</body>
+  </fieldset>
+</form>
+</div>
+<br><br><br><br><br><br><br>
+<hr>
+
+<textarea rows="10" cols="200"></textarea>            
+
+        
+        <script src="js/main.js"></script>
+    </body>
 </html>
