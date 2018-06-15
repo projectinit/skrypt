@@ -1,8 +1,6 @@
 const express = require('express');
 const app = express();
 var port = process.env.PORT || 3000;
-//const pgp = require('pg-promise')(/*options*/);
-//const db = pgp('postgres://username:password@host:port/database');
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
