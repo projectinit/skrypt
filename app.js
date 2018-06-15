@@ -1,10 +1,12 @@
 'use strict';
 
+
 const mongoose = require('mongoose');
 const express = require('express');
 
 const port = process.env.PORT || 3000;
 const app = express();
+mongoose.connect('mongodb://localhost/testskrypt');
 
 app.set('views', './views');
 app.set('view engine', 'ejs');
