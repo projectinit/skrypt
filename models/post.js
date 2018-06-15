@@ -3,11 +3,11 @@ var mongoose = require('mongoose')
    ,ObjectId = Schema.ObjectId;
 
 var postSchema = Schema({
-    author: { type: String, required: true },
-    timePosted: { type: Date, required: true },
+    author: { type: ObjectId, required: true },
+    timePosted: { type: Date, default: Date.now },
     parent: { type: ObjectId },
-    title: { type: String },
-    content: { type: String },
+    title: { type: String, trim: true },
+    content: { type: String, trim: true },
     likes: { type: [ObjectId] },
     comments: { type: [ObjectId] }
 });
