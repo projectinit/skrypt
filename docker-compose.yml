@@ -1,24 +1,68 @@
-version: '3'
+# Version of Docker Compose config syntax
+version: "3"
+
+# Define containers here
 services:
-  app:
+
+  # MongoDB container
+  skrypt_db:
+
+    # Give container a name to easily distinguish between containers
+    container_name: "skrypt_db"
+
+    # Use mongo image found in Docker Hub if not already found in local repository
+    image: mongo
+
+    # Set environment variables in container (using `.env` file)
+    environment:
+      - MONGO_DATA_DIR=${MONGO_DATA_DIR}
+      - MONGO_LOG_DIR=${MONGO_LOG_DIR}
+      # - MONGO_INITDB_DATABASE=${MONGO_INITDB_DATABASE} # Mongo will create a few databases regardless
+      # - MONGO_INITDB_ROOT_USERNAME=${MONGO_INITDB_ROOT_USERNAME} # Auth is assumed when username and password are provided
+      # - MONGO_INITDB_ROOT_PASSWORD=${MONGO_INITDB_ROOT_PASSWORD}
+
+    # Mount `./data/db` directory on host to `/data/db` directory in container
+    volumes:
+      - ./data/db:/data/db
+
+    # Use port 27017 on both host and container when connecting (port 27017 is default for MongoDB)
+    ports:
+      - "27017:27017"
+
+    # Run MongoDB server with `mongod`, limit filesize for development with `--smallfiles` (not recommended for production), write log files to `/dev/null` directory with `--logpath`, and try to limit output with `--quiet` (commented out for now)
+    command: mongod --smallfiles --logpath=/dev/null # --quiet
+
+    # Restart MongoDB server if it fails
+    restart: on-failure
+
+  # Web application container
+  skrypt_app:
+
+    # Give container a name to easily distinguish between containers
+    container_name: "skrypt_app"
+
+    # Build from root of project directory where the `Dockerfile` should be
     build: .
-    command: nodemon app.js
+
+    # Set environment variables in container (using `.env` file)
+    environment:
+      - NODE_ENV=${NODE_ENV}
+
+    # Mount root of host project directory to `/skrypt` directory in container
+    volumes:
+      - .:/skrypt
+
+    # Use port 3000 on both host and container when connecting
     ports:
       - "3000:3000"
-    volumes:
-      - .:/code
 
-  db:
-    image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: skrypt_local
-      MYSQL_USER: skrypt
-      MYSQL_PASSWORD: skrypt
-    ports:
-      - "3306:3306"
-    volumes:
-      - skrypt_db_data:/var/lib/mysql
+    # Create a link between mongo and app containers
+    links:
+      - skrypt_db
 
-volumes:
-  skrypt_db_data:
+    # Start mongo container before app container (does not wait for mongo to be up and running before starting app container)
+    depends_on:
+      - skrypt_db
+
+    # Restart app if it fails
+    restart: on-failure    
