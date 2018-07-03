@@ -31,6 +31,11 @@ module.exports = function(app) {
     })
   })
 
+  app.get('/logout', (req, res) => {
+    res.cookie("token", "", { expires: new Date(0) });
+    res.redirect('/')
+  })
+
   app.post('/new/user', create.user)
 
   app.post('/login', auth.login)
