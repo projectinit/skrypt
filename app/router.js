@@ -12,7 +12,6 @@ module.exports = function(app) {
     //console.log(req.cookies)
     const token = req.cookies.token
     postModel.find({}, function(err, posts) {
-      posts = nPosts
       if (auth.internalVerify(token)) res.render('home', { title: 'User Home', user: auth.getToken(token), posts: posts });
       else res.render('login')
     })
