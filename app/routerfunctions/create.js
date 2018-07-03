@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const vars = require('../../globalvars')
+mongoose.connect(vars.monoguri)
 exports.user = function (req, res) {
   const userModel = require('../models/user')
   var bcrypt = require('bcrypt');
