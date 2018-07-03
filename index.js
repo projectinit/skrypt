@@ -6,7 +6,19 @@ const express = require('express');
 
 const port = process.env.PORT || 3000;
 const app = express();
-mongoose.connect('mongodb://localhost/testskrypt');
+
+var port = process.env.PORT || 3000;
+var mongoose = require('mongoose');
+
+// DB Check
+mongoose.connect('mongodb://skrypt_db:27017')
+.then(res => {
+	console.log('Successfully connected to the database!');
+})
+.catch(err => {
+	console.log(err);
+	console.log('Cannot connect to the database!')
+});
 
 app.set('views', './views');
 app.set('view engine', 'ejs');

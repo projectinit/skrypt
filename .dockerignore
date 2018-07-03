@@ -1,0 +1,11 @@
+# Dependencies
+node_modules
+
+# Logs
+npm-debug.log
+
+# Envorinment Variables
+.env
+
+# Database volume directory
+data/
