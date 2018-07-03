@@ -12,17 +12,6 @@ module.exports = function(app) {
     //console.log(req.cookies)
     const token = req.cookies.token
     postModel.find({}, function(err, posts) {
-      let nPosts = []
-      posts.forEach(post => {
-        userModel.findOne({
-          "_id": post.author
-        }, 'username', function (err, user) {
-          if (user) post.author = user.username
-          else post.author = "Deleted User"
-          nPosts.push(post)
-          console.log(nPosts)
-        })
-      });
       posts = nPosts
       if (auth.internalVerify(token)) res.render('home', { title: 'User Home', user: auth.getToken(token), posts: posts });
       else res.render('login')
