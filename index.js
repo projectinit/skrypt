@@ -1,36 +1,28 @@
-'use strict';
-
-
 const mongoose = require('mongoose');
 const express = require('express');
-
+const vars = require('./globalvars')
+const router = require('./app/router')
+const bodyParser = require('body-parser')
 const port = process.env.PORT || 3000;
-const app = express();
-
-var port = process.env.PORT || 3000;
-var mongoose = require('mongoose');
-
+const app = express()
 // DB Check
-mongoose.connect('mongodb://skrypt_db:27017')
+mongoose.connect(vars.monoguri)
 .then(res => {
 	console.log('Successfully connected to the database!');
 })
 .catch(err => {
 	console.log(err);
-	console.log('Cannot connect to the database!')
+    console.log('Cannot connect to the database!')
+    console.log(vars.monoguri)
 });
-
-app.set('views', './views');
+app.use(bodyParser.urlencoded({
+    extended: true
+}));
+app.use(bodyParser.json());
+app.set('views', './app/views');
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
-
-app.get('/', (req, res) => {
-    res.render('home', { title: 'User Home', username: 'Bob' });
-});
-
-app.get('/profile', (req, res) => {
-    res.render('profile', { title: 'User Profile', username: 'Bob' });
-});
+router(app)
 
 app.listen(port, () => {
     console.log('listening on port 3000');
