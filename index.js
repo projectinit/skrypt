@@ -1,5 +1,12 @@
+'use strict';
+
+
+const mongoose = require('mongoose');
 const express = require('express');
+
+const port = process.env.PORT || 3000;
 const app = express();
+
 var port = process.env.PORT || 3000;
 var mongoose = require('mongoose');
 
