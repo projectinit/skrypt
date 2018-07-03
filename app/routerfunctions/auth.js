@@ -30,7 +30,7 @@ exports.login = function(req, res) {
 
 exports.verify = function(req, res) {
   let token = null
-  if (req.body.toke) token = jwt.verify(req.body.token, vars.jwtsecret)
+  if (req.body.token) token = jwt.verify(req.body.token, vars.jwtsecret)
   if (token) res.json({status: "success", user: token})
   else res.json({
     status: "fail"

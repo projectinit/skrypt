@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const vars = require('../../globalvars')
+const auth = require('./auth')
 mongoose.connect(vars.monoguri)
 exports.user = function (req, res) {
   const userModel = require('../models/user')
@@ -20,4 +21,19 @@ exports.user = function (req, res) {
       });
   })
   console.log(req.body)
+}
+
+exports.post = function(req,res) {
+  const postModel = require('../models/post')
+  const content = req.body.content
+  let token = req.cookies.token || req.body.token
+  if (token && auth.internalVerify(token)) {
+    const user = auth.getToken(token)
+    console.log(user)
+    const post = new postModel({author: user.id, content: content })
+    post.save(function(err, post) {
+      if (err) throw err
+      else res.json({status:"success"})
+    })
+  }
 }

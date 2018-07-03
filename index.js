@@ -29,3 +29,7 @@ router(app)
 app.listen(port, () => {
     console.log('listening on port 3000');
 });
+
+process.on('uncaughtException', function (err) {
+    console.log('Caught exception: ', err);
+});

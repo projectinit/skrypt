@@ -1,15 +1,26 @@
-<!DOCTYPE html>
-<!-- user home page (with feed/activity) -->
 <html>
+
 <head>
     <% include head %>
-    <title><%=title%></title>
+        <title>
+            <%=title%>
+        </title>
 </head>
+
 <body>
     <% include nav %>
-    <div class="container">
-        <h1>Welcome home, <%=user.username%>!</h1>
-    </div>
-    <% include footer %>
+        <div class="container">
+            <h1>Welcome home,
+                <%=user.username%>!</h1>
+            <div>
+                <% for(var i=0; i<posts.length; i++) { %>
+                <% var post = posts[i] %>
+                <% include post %>
+                <% } %>
+            </div>
+        </div>
+
+        <% include footer %>
 </body>
+
 </html>

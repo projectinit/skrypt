@@ -7,7 +7,7 @@ var postSchema = Schema({
     timePosted: { type: Date, default: Date.now },
     parent: { type: ObjectId },
     title: { type: String, trim: true },
-    content: { type: String, trim: true },
+    content: { type: String, trim: true , required: true},
     likes: { type: [ObjectId] },
     comments: { type: [ObjectId] }
 });
