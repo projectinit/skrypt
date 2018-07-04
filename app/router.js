@@ -146,6 +146,8 @@ module.exports = function (app) {
     else res.render('login')
   });
 
+  app.post('/new/workspace', create.workspace)
+
   app.all('/*', (req, res) => {
     res.json({error:"Function not available"})
   })

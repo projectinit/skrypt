@@ -4,6 +4,7 @@ const auth = require('./auth')
 mongoose.connect(vars.monoguri)
 const userModel = require('../models/user')
 const postModel = require('../models/post')
+const workspaceModel = require('../models/workplace')
 exports.user = function (req, res) {
   var bcrypt = require('bcrypt');
   const saltRounds = 10;
@@ -45,5 +46,35 @@ exports.post = function(req,res) {
         })
       })
     })
+  } else {
+    res.json({status: "fail"})
   }
+}
+
+exports.workspace = function (req,res) {
+  let token = req.cookies.token || req.body.token
+  const user = auth.getToken(token)
+  if (token && auth.internalVerify(token)) {
+    const workspaceObj = {
+      name: req.body.name,
+      description: req.body.description,
+      location: req.body.location,
+      employees: (req.body.isEmployee === "true") ? [user.id] : []
+    }
+    const workspace = new workspaceModel(workspaceObj)
+    workspace.save(function (err, workspace) {
+      if (err) throw err
+      else res.json({status: "success"})
+      if (req.body.isEmployee === "true") {
+        userModel.findOne({"_id":user.id}, function(err, user2) {
+          if (err) throw err
+          let workspaces = user2.workplaces
+          workspaces.push(workspace._id)
+          userModel.updateOne({"_id":user.id}, {workplaces: workspaces}, function(err, out) {
+            if (err) throw err
+          })
+        })
+      }
+    })
+  } else res.json({status: "fail"})
 }

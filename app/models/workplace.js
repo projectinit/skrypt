@@ -11,4 +11,4 @@ var workplaceSchema = Schema({
     employees: { type: [ObjectId] }
 });
 
-module.exports = mongoose.models('Workplace', workplaceSchema);
+module.exports = mongoose.model('Workplace', workplaceSchema);
