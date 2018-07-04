@@ -69,10 +69,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .post-card {
   margin: 0 auto;
-}
-
-.post-card .post-body hr {
-  padding: 0 !important;
+  border-radius: 0;
+  /* border: 1px solid #444; */
 }
 
 .post-card-footer .likes {
@@ -86,4 +84,8 @@ h1, h2, h3, h4, h5, h6 {
 .post-body {
   padding-left: 0px;
   padding-right: 0px;
+}
+
+.post-body hr {
+  color: #dddddd
 }

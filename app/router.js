@@ -128,13 +128,13 @@ module.exports = function (app) {
   })
 
   // POST Requests
-  app.post('/new/user', create.user)
+  app.post('/user/new', create.user)
 
   app.post('/login', auth.login)
 
   app.post('/auth', auth.verify)
 
-  app.post('/new/post', create.post)
+  app.post('/post/new', create.post)
 
   app.post('/', (req, res) => {
     //console.log(req.cookies)
@@ -146,7 +146,7 @@ module.exports = function (app) {
     else res.render('login')
   });
 
-  app.post('/new/workspace', create.workspace)
+  app.post('/workplace/new', create.workspace)
 
   app.all('/*', (req, res) => {
     res.json({error:"Function not available"})
