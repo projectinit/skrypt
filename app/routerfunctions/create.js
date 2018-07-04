@@ -2,8 +2,9 @@ const mongoose = require('mongoose');
 const vars = require('../../globalvars')
 const auth = require('./auth')
 mongoose.connect(vars.monoguri)
+const userModel = require('../models/user')
+const postModel = require('../models/post')
 exports.user = function (req, res) {
-  const userModel = require('../models/user')
   var bcrypt = require('bcrypt');
   const saltRounds = 10;
   const pass = req.body.password
@@ -26,7 +27,6 @@ exports.user = function (req, res) {
 }
 
 exports.post = function(req,res) {
-  const postModel = require('../models/post')
   const content = req.body.content
   let token = req.cookies.token || req.body.token
   if (token && auth.internalVerify(token)) {
@@ -36,6 +36,14 @@ exports.post = function(req,res) {
     post.save(function(err, post) {
       if (err) throw err
       else res.json({status:"success"})
+      userModel.findOne({"_id":user.id}, function(err, user2) {
+        if (err) throw err
+        let posts = user2.posts
+        posts.push(post._id)
+        userModel.updateOne({"_id":user.id}, {posts: posts}, function(err, out) {
+          if (err) throw err
+        })
+      })
     })
   }
 }
