@@ -18,8 +18,16 @@ module.exports = function(app) {
   });
   
   app.get('/login', (req, res) => {
-    res.render('login')
+    const token = req.cookies.token
+    if (!auth.internalVerify(token)) res.render('login')
+    else res.redirect('/')
   });
+
+  app.get('/register', (req, res) => {
+    const token = req.cookies.token
+    if (!auth.internalVerify(token)) res.render('register')
+    else res.redirect('/')
+  })
 
   app.get('/me', (req, res) => {
     const token = req.cookies.token
@@ -32,6 +40,26 @@ module.exports = function(app) {
     userModel.findOne({"_id":id}, 'id email username', function(err, user) {
       if (user) res.render('profile', { title: 'User Profile', user: user });
       else res.send("<h1>Cannot find user</h1>")
+    })
+  })
+
+  app.get('/post/:id', (req, res) => {
+    const id = req.params.id
+    postModel.findOne({"_id": id}, function (err, post) {
+      if (post) {
+        userModel.findOne({"_id":post.author}, "username id", function (err, user) {
+          let newPost = {
+            id : post.id,
+            author: user,
+            content: post.content,
+            likes: post.likes,
+            title: post.title,
+            timePosted: post.timePosted
+          }
+          res.render('partials/post', { post: newPost });
+        })
+      }
+      else res.send("<h1>Cannot find post</h1>")
     })
   })
 

@@ -1,0 +1,29 @@
+<%
+function pad(num, size) {
+  var s = num+"";
+  while (s.length < size) s = "0" + s;
+  return s;
+}
+  let timestamp = new Date(post.timePosted)
+  timestamp = `${timestamp.getMonth()+1}/${timestamp.getDate()}/${timestamp.getFullYear()} ${timestamp.getHours()}:${pad(timestamp.getMinutes(), 2)}`
+%>
+
+<div class="card post-card">
+  <div class="card-body post-body">
+    <div class="container">
+      <h4><a href="/user/<%=post.author._id%>">@<%= post.author.username %></a></h4>
+    <% if (post.title) { %>
+      <h5 class="card-title"><%= post.title %></h5>
+    <% } %>
+    </div>
+    <hr/>
+    <div class="container">
+    <p class="card-text"><%=post.content%></p>
+    </div>
+    <hr/>
+    <div class="container post-card-footer">
+      <p><span class="likes">Likes: <%=post.likes.length%></span><span class="text-muted timestamp">Posted <%=timestamp%></span></p>
+    </div>
+  </div>
+</div>
+<p style="display: none"><%=post%><br><%=post.author%></p>

@@ -42,7 +42,9 @@ h1, h2, h3, h4, h5, h6 {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
-
+.form-signin input[type="text"] {
+  border-radius: 0px;
+}
 .footer {
   position: absolute;
   bottom: 0;
@@ -63,4 +65,25 @@ h1, h2, h3, h4, h5, h6 {
   background: rgba(65, 135, 241, 0.34);
   height: 16px
   /* border: 2px solid rgba(65, 135, 241, 0.34) */
+}
+
+.post-card {
+  margin: 0 auto;
+}
+
+.post-card .post-body hr {
+  padding: 0 !important;
+}
+
+.post-card-footer .likes {
+  float: left;
+}
+
+.post-card-footer .timestamp {
+  float: right;
+}
+
+.post-body {
+  padding-left: 0px;
+  padding-right: 0px;
 }

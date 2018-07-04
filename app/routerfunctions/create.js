@@ -17,10 +17,12 @@ exports.user = function (req, res) {
     })
       user.save(function (err, user) {
         if (err) return console.error(err);
-        else res.json({status: "success"})
+        else {
+          if (req.headers['content-type'] === "application/x-www-form-urlencoded") res.redirect('/')
+          else res.json({status:"success"})
+        }
       });
   })
-  console.log(req.body)
 }
 
 exports.post = function(req,res) {
