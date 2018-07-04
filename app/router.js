@@ -6,17 +6,45 @@ const userModel = require('./models/user')
 const postModel = require('./models/post')
 mongoose.connect(vars.monoguri)
 
-module.exports = function(app) {
+module.exports = function (app) {
   // GET requests
   app.get('/', (req, res) => {
     //console.log(req.cookies)
     const token = req.cookies.token
-    postModel.find({}, function(err, posts) {
-      if (auth.internalVerify(token)) res.render('home', { title: 'User Home', user: auth.getToken(token), posts: posts });
-      else res.render('login')
-    })
+    if (auth.internalVerify(token)) {
+      postModel.find({}, function (err, posts) {
+        if (posts.length > 0) {
+          let newPosts = []
+          posts.forEach(post => {
+            userModel.findOne({"_id": post.author}, "username id", function (err, user) {
+              let newPost = {
+                id: post.id,
+                author: user,
+                content: post.content,
+                likes: post.likes,
+                title: post.title,
+                timePosted: post.timePosted
+              }
+              newPosts.push(newPost)
+              if (newPosts.length === posts.length) res.render('home', {
+                title: 'User Home',
+                user: auth.getToken(token),
+                posts: newPosts
+              });
+              else console.log(newPosts)
+            })
+          })
+        } else res.render('home', {
+          title: 'User Home',
+          user: auth.getToken(token),
+          posts: []
+        });
+      })
+    }
+    else res.render('login')
+
   });
-  
+
   app.get('/login', (req, res) => {
     const token = req.cookies.token
     if (!auth.internalVerify(token)) res.render('login')
@@ -31,14 +59,45 @@ module.exports = function(app) {
 
   app.get('/me', (req, res) => {
     const token = req.cookies.token
-    if (auth.internalVerify(token)) res.render('profile', { title: 'Home', user: auth.getToken(token) });
+    let user = auth.getToken(token)
+    if (auth.internalVerify(token)) res.redirect(`/user/${user.id}`)
     else res.render('login')
   });
 
-  app.get('/user/:id', (req,res) => {
+  app.get('/user/:id', (req, res) => {
     const id = req.params.id
-    userModel.findOne({"_id":id}, 'id email username', function(err, user) {
-      if (user) res.render('profile', { title: 'User Profile', user: user });
+    userModel.findOne({"_id": id}, 'id email username', function (err, user) {
+      if (user) {
+        postModel.find({"author":id}, function (err, posts) {
+          if (err) throw err
+          if (posts.length > 0) {
+            let newPosts = []
+            posts.forEach(post => {
+              userModel.findOne({"_id": post.author}, "username id", function (err, user) {
+                let newPost = {
+                  id: post.id,
+                  author: user,
+                  content: post.content,
+                  likes: post.likes,
+                  title: post.title,
+                  timePosted: post.timePosted
+                }
+                newPosts.push(newPost)
+                if (newPosts.length === posts.length) res.render('profile', {
+                  title: 'User Profile',
+                  user: user,
+                  posts: newPosts
+                });
+                else console.log(newPosts)
+              })
+            })
+          } else res.render('profile', {
+            title: 'User Profile',
+            user: user,
+            posts: []
+          });
+        })
+      }
       else res.send("<h1>Cannot find user</h1>")
     })
   })
@@ -47,16 +106,16 @@ module.exports = function(app) {
     const id = req.params.id
     postModel.findOne({"_id": id}, function (err, post) {
       if (post) {
-        userModel.findOne({"_id":post.author}, "username id", function (err, user) {
+        userModel.findOne({"_id": post.author}, "username id", function (err, user) {
           let newPost = {
-            id : post.id,
+            id: post.id,
             author: user,
             content: post.content,
             likes: post.likes,
             title: post.title,
             timePosted: post.timePosted
           }
-          res.render('partials/post', { post: newPost });
+          res.render('partials/post', {post: newPost});
         })
       }
       else res.send("<h1>Cannot find post</h1>")
@@ -64,7 +123,7 @@ module.exports = function(app) {
   })
 
   app.get('/logout', (req, res) => {
-    res.cookie("token", "", { expires: new Date(0) });
+    res.cookie("token", "", {expires: new Date(0)});
     res.redirect('/')
   })
 
@@ -86,4 +145,8 @@ module.exports = function(app) {
     });
     else res.render('login')
   });
+
+  app.all('/*', (req, res) => {
+    res.json({error:"Function not available"})
+  })
 }
