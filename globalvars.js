@@ -1,0 +1,3 @@
+require('dotenv').config()
+exports.monoguri = process.env.mongouri || "mongodb://skrypt_db:27017"
+exports.jwtsecret = "27bedfa86331f863d0ded6520e56cb0d6cd3446241390f3ff8"

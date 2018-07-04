@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   data-v-1084b650=""
+   viewBox="0 0 300 300"
+   version="1.1"
+   id="svg14"
+   sodipodi:docname="icon.svg"
+   inkscape:version="0.92.3 (2405546, 2018-03-11)">
+  <metadata
+     id="metadata20">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs18" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1920"
+     inkscape:window-height="1027"
+     id="namedview16"
+     showgrid="false"
+     inkscape:zoom="0.78666667"
+     inkscape:cx="150"
+     inkscape:cy="150"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg14" />
+  <!---->
+  <!---->
+  <rect
+     data-v-1084b650=""
+     fill="#FFFFFF"
+     x="0"
+     y="0"
+     width="300px"
+     height="300px"
+     class="logo-background-square"
+     id="rect2"
+     style="fill:none" />
+  <!---->
+  <linearGradient
+     data-v-1084b650=""
+     gradientTransform="rotate(25)"
+     id="e2435cca-d8f3-a0ca-8dce-26ef629ac2cd"
+     x1="0%"
+     y1="0%"
+     x2="100%"
+     y2="0%">
+    <stop
+       data-v-1084b650=""
+       offset="0%"
+       style="stop-color: rgb(234, 116, 37); stop-opacity: 1;"
+       id="stop4" />
+    <stop
+       data-v-1084b650=""
+       offset="100%"
+       style="stop-color: rgb(45, 122, 95); stop-opacity: 1;"
+       id="stop6" />
+  </linearGradient>
+  <g
+     data-v-1084b650=""
+     id="0286957a-2663-6768-0719-ef8dd8be5712"
+     fill="url(#e2435cca-d8f3-a0ca-8dce-26ef629ac2cd)"
+     stroke="none"
+     transform="matrix(0.7999999999999998,0,0,0.7999999999999998,29.999993896484398,30.000003051757844)">
+    <svg
+       viewBox="0 0 100 100"
+       version="1.1"
+       id="svg11">
+      <path
+         d="M66.327 94.224h-32.67l2.847-10.396h26.975zM54.383 5.776h-8.688L24.758 56.354l11.984 25.5h26.5l12-25.484L54.383 5.776zM61.32 78.86H38.743L28.039 56.276 47.66 8.86h.833v42.312a3.249 3.249 0 0 0-1.763 2.882 3.263 3.263 0 0 0 6.526 0c0-1.259-.72-2.338-1.763-2.882V8.86h.834l19.635 47.417L61.32 78.86z"
+         id="path9" />
+    </svg>
+  </g>
+</svg>
