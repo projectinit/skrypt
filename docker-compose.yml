@@ -23,7 +23,7 @@ services:
 
     # Mount `./data/db` directory on host to `/data/db` directory in container
     volumes:
-      - ./data/db:/data/db
+      - db_data:/data/db
 
     # Use port 27017 on both host and container when connecting (port 27017 is default for MongoDB)
     ports:
@@ -65,4 +65,7 @@ services:
       - skrypt_db
 
     # Restart app if it fails
-    restart: on-failure    
+    restart: on-failure   
+
+volumes:
+  db_data:
