@@ -4,15 +4,6 @@
 
 View URIs are URIs that are viewed by a client that expects a content-type `text/html` response. All of these should respond with a rendered template or other HTML code.
 
-### Object URIs
-
-List of object URIs:
-Object | URI
--------|----
-User   | `/user/{id}`
-Post   | `/post/{id}`
-Workplace | `/worplace/{id}`
-
 ## API URIs
 
 API URIs are URIs that will respond with a content-type of `application/json` (however some still respond with `text/html` under certain conditions)
