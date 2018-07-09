@@ -1,5 +1,6 @@
 const create = require('./routerfunctions/create')
 const auth = require('./routerfunctions/auth')
+const mod = require('./routerfunctions/mod')
 const mongoose = require('mongoose');
 const vars = require('../globalvars')
 const userModel = require('./models/user')
@@ -22,7 +23,7 @@ module.exports = function (app) {
             posts: replyObject
           });
         } else {
-          postModel.find({}, function (err, posts) {
+          postModel.find({}, null, { sort :{ timePosted : -1}}, function (err, posts) {
             if (posts.length > 0) {
               let newPosts = []
               posts.forEach(post => {
@@ -84,7 +85,7 @@ module.exports = function (app) {
       if (user) {
         postModel.find({
           "author": id
-        }, function (err, posts) {
+        }, null, { sort :{ timePosted : -1}}, function (err, posts) {
           if (err) throw err
           if (posts.length > 0) {
             let newPosts = []
@@ -123,7 +124,7 @@ module.exports = function (app) {
     const id = req.params.id
     userModel.findOne({"_id": id}, 'id email username', function (err, user) {
       if (user) {
-        postModel.find({"author":id}, function (err, posts) {
+        postModel.find({"author":id}, null, { sort :{ timePosted : -1}}, function (err, posts) {
           if (err) throw err
           if (posts.length > 0) {
             let newPosts = []
@@ -196,6 +197,8 @@ module.exports = function (app) {
       } else res.json({status: "fail"})
     })
   })
+
+  app.get('/post/:id/like', mod.like)
 
   // POST Requests
   app.post('/user/new', create.user)
