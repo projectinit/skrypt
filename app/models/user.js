@@ -5,12 +5,13 @@ var mongoose = require('mongoose')
 var userSchema = new Schema({
     email: { type: String, required: true, unique: true },
     username: { type: String, required: true, unique: true },
+    // we can make password unique because its salted
     password: { type: String, required: true, unique: true },
     posts: { type: [ObjectId] },
-    fullname: { type: String },
-    bio: { type: String },
-    blurb: { type: String },
-    picture: { type: String },
+    fullname: { type: String, default: "" },
+    bio: { type: String, default: "" },
+    blurb: { type: String, default: "" },
+    picture: { type: String, default: "" },
     workplaces: { type: [ObjectId] },
     connections: { type: [ObjectId] }
 });
