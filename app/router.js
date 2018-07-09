@@ -73,7 +73,7 @@ module.exports = function (app) {
   app.get('/me', (req, res) => {
     const token = req.cookies.token
     let user = auth.getToken(token)
-    if (auth.internalVerify(token)) res.redirect(`/user/${user.id}`)
+    if (auth.internalVerify(token)) res.redirect(`/profile/${user.id}`)
     else res.render('login')
   });
 
@@ -121,6 +121,15 @@ module.exports = function (app) {
   })
 
   app.get('/user/:id', (req, res) => {
+    const id = req.params.id
+    userModel.findOne({"_id": id}, 'id username fullname bio blurb picture', function (err, user) {
+      if (user) {
+        res.json({status:"success", user: user})
+      }
+    })
+  })
+
+  app.get('/user/:id/posts', (req, res) => {
     const id = req.params.id
     userModel.findOne({"_id": id}, 'id email username', function (err, user) {
       if (user) {
