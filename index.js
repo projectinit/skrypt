@@ -5,6 +5,8 @@ const router = require('./app/router')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
 const port = process.env.PORT || 3000;
+const redis = require('redis')
+const redisClient = redis.createClient(vars.redisPort, vars.redisIP)
 const app = express()
 // DB Check
 mongoose.connect(vars.monoguri)
@@ -33,3 +35,8 @@ app.listen(port, () => {
 process.on('uncaughtException', function (err) {
     console.log('Caught exception: ', err);
 });
+
+setInterval(function() {
+  redisClient.send_command("FLUSHDB")
+  console.log("flushing redis")
+}, 60000)

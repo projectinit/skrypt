@@ -5,43 +5,55 @@ const vars = require('../globalvars')
 const userModel = require('./models/user')
 const postModel = require('./models/post')
 mongoose.connect(vars.monoguri)
-
+const redis = require('redis')
+const redisClient = redis.createClient(vars.redisPort, vars.redisIP)
 module.exports = function (app) {
   // GET requests
   app.get('/', (req, res) => {
     //console.log(req.cookies)
     const token = req.cookies.token
     if (auth.internalVerify(token)) {
-      postModel.find({}, function (err, posts) {
-        if (posts.length > 0) {
-          let newPosts = []
-          posts.forEach(post => {
-            userModel.findOne({"_id": post.author}, "username id", function (err, user) {
-              let newPost = {
-                id: post.id,
-                author: user,
-                content: post.content,
-                likes: post.likes,
-                title: post.title,
-                timePosted: post.timePosted
-              }
-              newPosts.push(newPost)
-              if (newPosts.length === posts.length) res.render('home', {
-                title: 'User Home',
-                user: auth.getToken(token),
-                posts: newPosts
-              });
-              else console.log(newPosts)
-            })
+      redisClient.get('globalPosts', function (err, reply) {
+        if (reply) {
+          const replyObject = JSON.parse(reply)
+          res.render('home', {
+            title: 'User Home',
+            user: auth.getToken(token),
+            posts: replyObject
+          });
+        } else {
+          postModel.find({}, function (err, posts) {
+            if (posts.length > 0) {
+              let newPosts = []
+              posts.forEach(post => {
+                userModel.findOne({"_id": post.author}, "username id", function (err, user) {
+                  let newPost = {
+                    id: post.id,
+                    author: user,
+                    content: post.content,
+                    likes: post.likes,
+                    title: post.title,
+                    timePosted: post.timePosted
+                  }
+                  newPosts.push(newPost)
+                  if (newPosts.length === posts.length) res.render('home', {
+                    title: 'User Home',
+                    user: auth.getToken(token),
+                    posts: newPosts
+                  });
+                  else console.log(newPosts)
+                })
+              })
+            } else res.render('home', {
+              title: 'User Home',
+              user: auth.getToken(token),
+              posts: []
+            });
           })
-        } else res.render('home', {
-          title: 'User Home',
-          user: auth.getToken(token),
-          posts: []
-        });
+        }
       })
     }
-    else res.render('login')
+    else res.redirect('/login')
 
   });
 
@@ -64,16 +76,22 @@ module.exports = function (app) {
     else res.render('login')
   });
 
-  app.get('/user/:id', (req, res) => {
+  app.get('/profile/:id', (req, res) => {
     const id = req.params.id
-    userModel.findOne({"_id": id}, 'id email username', function (err, user) {
+    userModel.findOne({
+      "_id": id
+    }, 'id email username', function (err, user) {
       if (user) {
-        postModel.find({"author":id}, function (err, posts) {
+        postModel.find({
+          "author": id
+        }, function (err, posts) {
           if (err) throw err
           if (posts.length > 0) {
             let newPosts = []
             posts.forEach(post => {
-              userModel.findOne({"_id": post.author}, "username id", function (err, user) {
+              userModel.findOne({
+                "_id": post.author
+              }, "username id", function (err, user) {
                 let newPost = {
                   id: post.id,
                   author: user,
@@ -97,6 +115,35 @@ module.exports = function (app) {
             posts: []
           });
         })
+      } else res.send("<h1>Cannot find user</h1>")
+    })
+  })
+
+  app.get('/user/:id', (req, res) => {
+    const id = req.params.id
+    userModel.findOne({"_id": id}, 'id email username', function (err, user) {
+      if (user) {
+        postModel.find({"author":id}, function (err, posts) {
+          if (err) throw err
+          if (posts.length > 0) {
+            let newPosts = []
+            posts.forEach(post => {
+              userModel.findOne({"_id": post.author}, "username id", function (err, user) {
+                let newPost = {
+                  id: post.id,
+                  author: user,
+                  content: post.content,
+                  likes: post.likes,
+                  title: post.title,
+                  timePosted: post.timePosted
+                }
+                newPosts.push(newPost)
+                if (newPosts.length === posts.length) res.json({status: "success", user: user, posts: newPosts});
+                else console.log(newPosts)
+              })
+            })
+          } else res.json({status: "success", user: user, posts: []});
+        })
       }
       else res.send("<h1>Cannot find user</h1>")
     })
@@ -115,7 +162,7 @@ module.exports = function (app) {
             title: post.title,
             timePosted: post.timePosted
           }
-          res.render('partials/post', {post: newPost});
+          res.json({status: "success", post: newPost});
         })
       }
       else res.send("<h1>Cannot find post</h1>")
@@ -125,6 +172,29 @@ module.exports = function (app) {
   app.get('/logout', (req, res) => {
     res.cookie("token", "", {expires: new Date(0)});
     res.redirect('/')
+  })
+
+  app.get('/feed', (req, res) => {
+    postModel.find({}, function (err, posts) {
+      if (posts.length > 0) {
+        let newPosts = []
+        posts.forEach(post => {
+          userModel.findOne({"_id": post.author}, "username id", function (err, user) {
+            let newPost = {
+              id: post.id,
+              author: user,
+              content: post.content,
+              likes: post.likes,
+              title: post.title,
+              timePosted: post.timePosted
+            }
+            newPosts.push(newPost)
+            if (newPosts.length === posts.length) res.json({status: "success", posts: newPosts})
+            else console.log(newPosts)
+          })
+        })
+      } else res.json({status: "fail"})
+    })
   })
 
   // POST Requests
