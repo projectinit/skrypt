@@ -18,16 +18,9 @@ exports.like = function(req, res) {
         userModel.findOne({"_id": post.author}, "username id", function (err, user) {
           if (err) throw err
           let likes = post.likes || []
-          likes.push(user.id)
+          if (!likes.includes(user.id)) likes.push(user.id)
+          else likes.splice(likes.indexOf(user.id), 1)
           console.log(likes)
-          let newPost = {
-            id: post.id,
-            author: post.author,
-            content: post.content,
-            likes: likes,
-            title: post.title,
-            timePosted: post.timePosted
-          }
           postModel.updateOne({"_id": id}, {likes: likes},  function(err, out) {
             if (err) throw err
             res.json({status: "success", post: out});
@@ -47,8 +40,13 @@ exports.edituser = (req, res) => {
   if (token && auth.internalVerify(token)) {
     const user = auth.getToken(token)
     userModel.updateOne({_id: user.id}, {email: req.body.email, username: req.body.username, fullname: req.body.fullname}, (err, out) => {
-      if (err) res.json({status: "fail"})
-      else res.json({status: "success"}).redirect('/me/edit')
+      if (err) {
+        console.log(req.headers)
+        res.redirect('/me/edit')
+      }
+      else {
+        res.redirect('/me/edit')
+      }
       console.log(out)
     })
   }
