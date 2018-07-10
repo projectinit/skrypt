@@ -4,15 +4,14 @@
 		<title>SKRYPT</title>
 	</head>
 	<body><% include nav %>
+  <script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
 		<div class="container">
 			<div class="row">
-				<h1>Welcome home,
-                        <%= user.username %>!
-				</h1>
+				<h1>Welcome home!</h1>
 			</div>
-			<div class="row">
-                <textarea id="test" class="form-control" style="width: 100%"></textarea>
-                <button id="target" class="btn btn-lg btn-primary btn-block">Test</button>
+			<div class="row post-homescreen">
+                <textarea id="test" class="form-control"></textarea>
+                <button id="target" class="btn btn-lg btn-primary btn-block">Post</button>
 			</div>
 			<div class="row">
 				<div class="col-md-6"><% for(var i = 0; i < posts.length; i++) { %><% var post = posts[i] %><% include partials/post %><% } %><% if (posts.length === 0) { %>
@@ -22,6 +21,9 @@
 		</div>
         <!-- TODO: Rewrite with better and more clean ajax code -->
         <script>
+        $('#test').bind('input propertychange', function() {
+          autosize(document.getElementById("test"));
+        })
         $(document).ready(function () {
             $( "#target" ).click(function() {
             const test = $('#test').val();

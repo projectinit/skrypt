@@ -101,3 +101,17 @@ h1, h2, h3, h4, h5, h6 {
 .footer-internal p {
   text-align: center;
 }
+
+.post-homescreen {
+ margin-bottom: 25px; 
+}
+
+.post-homescreen textarea {
+  width: 100%;
+  margin-bottom: 10px;
+  min-height: 38px;
+}
+
+.post-modal {
+
+}
