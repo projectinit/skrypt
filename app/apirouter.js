@@ -13,83 +13,8 @@ const app = express.Router();
 const upload = multer()
 const redisClient = redis.createClient(vars.redisPort, vars.redisIP)
 
-// TODO: REDIS IMPLEMENTATION
-/** 
- * Redis Impementation:
- * On request, check redis for data
- * If redis doesn't have it, check mongo then put data in redis
- * If data is updated in mongo, remove (or maybe update?) redis entry
- */
-
-// TODO: CODE CLEANUP AND USAGE OF Model.find().populate() (see '/user/:id/posts' GET request)
-
-// GET Requests
-app.get('/', (req, res) => {
-  const token = req.cookies.token
-  if (auth.internalVerify(token)) {
-    redisClient.get('globalPosts', function (err, reply) {
-      if (reply) {
-        const replyObject = JSON.parse(reply)
-        res.render('home', {
-          title: 'User Home',
-          user: auth.getToken(token),
-          posts: replyObject
-        });
-      } else {
-        postModel.find({}).populate('author', 'username _id picture fullname').sort({
-          timePosted: -1
-        }).exec((err, posts) => {
-          if (err) throw err
-          res.render('home', {
-            title: 'User Home',
-            user: auth.getToken(token),
-            posts: posts
-          });
-        })
-      }
-    })
-  } else res.redirect('/login')
-
-});
-
-app.get('/login', (req, res) => {
-  const token = req.cookies.token
-  if (!auth.internalVerify(token)) res.render('login')
-  else res.redirect('/')
-});
-
-app.get('/register', (req, res) => {
-  const token = req.cookies.token
-  if (!auth.internalVerify(token)) res.render('register')
-  else res.redirect('/')
-})
-
-app.get('/me', (req, res) => {
-  const token = req.cookies.token
-  let user = auth.getToken(token)
-  if (auth.internalVerify(token)) res.redirect(`/profile/${user.id}`)
-  else res.render('login')
-});
-
-app.get('/profile/:id', (req, res) => {
-  const id = req.params.id
-  userModel.findOne({
-    "_id": id
-  }, 'username _id picture fullname bio blurb posts').populate({
-    path: 'posts',
-    populate: {
-      path: 'author',
-      select: 'username _id picture fullname'
-    }
-  }).exec((err, user) => {
-    if (user) {
-      res.render('profile', {
-        title: 'User Profile',
-        user: user,
-        posts: (user.posts) ? user.posts : []
-      });
-    } else res.send("<h1>Cannot find user</h1>")
-  })
+app.all('/', (req,res)=> {
+  res.json({name:"Skrypt API",version:"v0.0.1"})
 })
 
 app.get('/user/:id', (req, res) => {
@@ -106,19 +31,6 @@ app.get('/user/:id', (req, res) => {
       error: "cannot find user"
     })
   })
-})
-
-app.get('/me/edit', (req, res) => {
-  const token = req.cookies.token
-  if (token && auth.internalVerify(token)) {
-    const user = auth.getToken(token)
-    userModel.findById(user.id, (err, user2) => {
-      if (err) throw err
-      res.render('editprofile', {
-        user: user2
-      })
-    })
-  } else res.redirect('/login')
 })
 
 app.get('/user/:id/posts', (req, res) => {
@@ -159,15 +71,8 @@ app.get('/post/:id', (req, res) => {
         status: "success",
         post: post
       });
-    } else res.send("<h1>Cannot find post</h1>")
+    } else res.json({status: "fail",error: "Cannot find post"})
   })
-})
-
-app.get('/logout', (req, res) => {
-  res.cookie("token", "", {
-    expires: new Date(0)
-  });
-  res.redirect('/')
 })
 
 app.get('/feed', (req, res) => {

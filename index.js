@@ -27,6 +27,7 @@ app.set('views', './app/views');
 app.set('view engine', 'ejs');
 app.use(express.static('public'));
 app.use(require('./app/router'))
+app.use('/api', require('./app/apirouter'))
 
 app.listen(port, () => {
     console.log('listening on port 3000');
