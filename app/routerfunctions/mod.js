@@ -40,3 +40,16 @@ exports.like = function(req, res) {
     res.json({status: "fail"})
   }
 }
+
+exports.edituser = (req, res) => {
+  let token = req.cookies.token || req.body.token
+  const id = req.params.id
+  if (token && auth.internalVerify(token)) {
+    const user = auth.getToken(token)
+    userModel.updateOne({_id: user.id}, {email: req.body.email, username: req.body.username, fullname: req.body.name}, (err, out) => {
+      if (err) res.json({status: "fail"})
+      else res.json({status: "success"}).redirect('/me/edit')
+      console.log(out)
+    })
+  }
+}

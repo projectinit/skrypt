@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <% include head %>
+        <title>Edit your profile</title>
+</head>
+
+<body>
+    <% include nav %>
+        <div class="container">
+            <div class="row">
+                <h1>Edit Your Profile</h1>
+            </div>
+                <form  action="/login" method="POST">
+                    <div class="form-group row">
+                        <input type="text" class="form-control" placeholder="Name" name="fullname" id="fullname" value="<%= user.fullname %>">
+                    </div>
+                    <div class="form-group row">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="basic-addon1">@</span>
+                        </div>
+                        <input type="text" class="form-control" placeholder="Username" name="username" id="username" value="<%= user.username %>">
+                    </div>
+                    </div>
+                    <div class="form-group row">
+                        <input type="email" class="form-control" placeholder="Email" name="email" id="email" value="<%= user.email %>">
+                    </div>
+                    <div class="form-group row">
+                        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+                    </div>
+                </form>
+        </div>
+        <% include footer %>
+</body>
+
+</html>
