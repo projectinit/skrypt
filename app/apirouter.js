@@ -11,7 +11,6 @@ const multer = require('multer');
 const express = require('express');
 const app = express.Router();
 const upload = multer()
-const redisClient = redis.createClient(vars.redisPort, vars.redisIP)
 
 app.all('/', (req,res)=> {
   res.json({name:"Skrypt API",version:"v0.0.1"})
