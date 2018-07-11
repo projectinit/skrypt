@@ -13,7 +13,7 @@ const app = express.Router();
 const upload = multer()
 
 app.all('/', (req,res)=> {
-  res.json({name:"Skrypt API",version:"v0.0.1"})
+  res.json({name:"Skrypt API",version:"v0.0.1-firstrun"})
 })
 
 app.get('/user/:id', (req, res) => {
