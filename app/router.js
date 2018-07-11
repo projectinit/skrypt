@@ -221,4 +221,9 @@ app.post('/filetest', upload.single('avatar'), function (req, res, next) {
   }
 });
 
+// Default Route
+app.all('/*', (req, res) => {
+  res.status(404).render('404test')
+})
+
 module.exports = app

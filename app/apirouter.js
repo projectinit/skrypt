@@ -130,4 +130,11 @@ app.post('/filetest', upload.single('avatar'), function (req, res, next) {
   }
 });
 
+// Default Route
+app.all('/*', (req, res) => {
+  res.status(405).render('405', {
+    url: req.originalUrl
+  })
+})
+
 module.exports = app
