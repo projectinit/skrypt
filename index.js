@@ -29,7 +29,7 @@ app.use(require('./app/router'))
 app.use('/api', require('./app/apirouter'))
 
 app.listen(port, () => {
-    console.log('listening on port 3000');
+    console.log('listening on port ' + port);
 });
 
 process.on('uncaughtException', function (err) {

@@ -21,30 +21,22 @@ const upload = multer()
  */
 
 // TODO: CODE CLEANUP AND USAGE OF Model.find().populate() (see '/user/:id/posts' GET request)
+// TODO: Move GET requests to a seperate interpreter, see how POST requests do it
 
 // GET Requests
 app.get('/', (req, res) => {
   const token = req.cookies.token
   if (auth.internalVerify(token)) {
-    if (reply) {
-      const replyObject = JSON.parse(reply)
+    postModel.find({}).populate('author', 'username _id picture fullname').sort({
+      timePosted: -1
+    }).exec((err, posts) => {
+      if (err) throw err
       res.render('home', {
         title: 'User Home',
         user: auth.getToken(token),
-        posts: replyObject
+        posts: posts
       });
-    } else {
-      postModel.find({}).populate('author', 'username _id picture fullname').sort({
-        timePosted: -1
-      }).exec((err, posts) => {
-        if (err) throw err
-        res.render('home', {
-          title: 'User Home',
-          user: auth.getToken(token),
-          posts: posts
-        });
-      })
-    }
+    })
   } else res.redirect('/login')
 
 });
@@ -175,7 +167,7 @@ app.get('/feed', (req, res) => {
       posts.forEach(post => {
         userModel.findOne({
           "_id": post.author
-        }, "username _id picture fullname", function (err, user) {
+        }, "username _id fullname", function (err, user) {
           let newPost = {
             id: post.id,
             author: user,
