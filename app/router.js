@@ -27,27 +27,25 @@ const redisClient = redis.createClient(vars.redisPort, vars.redisIP)
 app.get('/', (req, res) => {
   const token = req.cookies.token
   if (auth.internalVerify(token)) {
-    redisClient.get('globalPosts', function (err, reply) {
-      if (reply) {
-        const replyObject = JSON.parse(reply)
+    if (reply) {
+      const replyObject = JSON.parse(reply)
+      res.render('home', {
+        title: 'User Home',
+        user: auth.getToken(token),
+        posts: replyObject
+      });
+    } else {
+      postModel.find({}).populate('author', 'username _id picture fullname').sort({
+        timePosted: -1
+      }).exec((err, posts) => {
+        if (err) throw err
         res.render('home', {
           title: 'User Home',
           user: auth.getToken(token),
-          posts: replyObject
+          posts: posts
         });
-      } else {
-        postModel.find({}).populate('author', 'username _id picture fullname').sort({
-          timePosted: -1
-        }).exec((err, posts) => {
-          if (err) throw err
-          res.render('home', {
-            title: 'User Home',
-            user: auth.getToken(token),
-            posts: posts
-          });
-        })
-      }
-    })
+      })
+    }
   } else res.redirect('/login')
 
 });
@@ -220,8 +218,14 @@ app.post('/filetest', upload.single('avatar'), function (req, res, next) {
   if (token && auth.internalVerify(token)) {
     const base64 = req.file.buffer.toString('base64')
     const user = auth.getToken(token);
-    userModel.updateOne({"_id":user.id}, {"picture":base64}, (err, raw) => {
-      res.json({"status":"success"})
+    userModel.updateOne({
+      "_id": user.id
+    }, {
+      "picture": base64
+    }, (err, raw) => {
+      res.json({
+        "status": "success"
+      })
     })
   }
 });
