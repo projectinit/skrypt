@@ -82,7 +82,7 @@ app.get('/feed', (req, res) => {
       posts.forEach(post => {
         userModel.findOne({
           "_id": post.author
-        }, "username _id picture fullname", function (err, user) {
+        }, "username _id fullname", function (err, user) {
           let newPost = {
             id: post.id,
             author: user,
