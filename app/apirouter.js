@@ -99,7 +99,7 @@ app.get('/feed', (req, res) => {
         })
       })
     } else res.json({
-      status: "fail"
+      status: "fail", error: "No posts"
     })
   })
 })
