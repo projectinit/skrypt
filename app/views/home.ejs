@@ -1,26 +1,62 @@
+<% const nofooter = true %>
 <html>
+	<head><% include head %>
+		<title>SKRYPT</title>
+	</head>
+	<body><% include nav %>
+  <script src="https://rawgit.com/jackmoore/autosize/master/dist/autosize.min.js"></script>
+		<div class="container">
+			<div class="row">
+				<h1>Welcome home!</h1>
+			</div>
+			<div class="row post-homescreen">
+                <textarea id="test" class="form-control"></textarea>
+                <button id="target" class="btn btn-lg btn-primary btn-block">Post</button>
+			</div>
+			<div class="row">
+				<div class="col-md-6"><% for(var i = 0; i < posts.length; i++) { %><% var post = posts[i] %><% include partials/post %><% } %><% if (posts.length === 0) { %>
+					<p>No posts</p><% } %>
+				</div>
+			</div>
+		</div>
+        <!-- TODO: Rewrite with better and more clean ajax code -->
+        <script>
+        $('#test').bind('input propertychange', function() {
+          autosize(document.getElementById("test"));
+        })
+        $(document).ready(function () {
+            $( "#target" ).click(function() {
+            const test = $('#test').val();
+            var data = JSON.stringify({
+  "content": test
+});
 
-<head>
-    <% include head %>
-        <title>
-            <%=title%>
-        </title>
-</head>
+var settings = {
+  "async": true,
+  "crossDomain": true,
+  "url": "/post/new",
+  "method": "POST",
+  "headers": {
+    "Content-Type": "application/json",
+    "Cache-Control": "no-cache",
+    "Postman-Token": "fceb8314-d248-4b73-881c-6fcfeb885f59"
+  },
+  "processData": false,
+  "data": data
+}
 
-<body>
-    <% include nav %>
-        <div class="container">
-            <h1>Welcome home,
-                <%=user.username%>!</h1>
-            <div>
-                <% for(var i=0; i<posts.length; i++) { %>
-                <% var post = posts[i] %>
-                <% include post %>
-                <% } %>
-            </div>
-        </div>
-
-        <% include footer %>
-</body>
-
+$.ajax(settings).done(function (response) {
+  
+  if (response.status === "success") window.location.reload();
+});
+            });
+        })
+        </script>
+        <script>
+        function test() {
+            
+        }
+        </script>
+		<% include footer %>
+	</body>
 </html>

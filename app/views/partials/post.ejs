@@ -1,0 +1,36 @@
+<%
+function pad(num, size) {
+  var s = num+"";
+  while (s.length < size) s = "0" + s;
+  return s;
+}
+  let timestamp = new Date(post.timePosted)
+  timestamp = `${timestamp.getMonth()+1}/${timestamp.getDate()}/${timestamp.getFullYear()} ${timestamp.getHours()}:${pad(timestamp.getMinutes(), 2)}`
+%>
+
+<div class="card post-card">
+  <div class="card-body post-body">
+    <div class="container">
+    <div class="row">
+    <div class="col-3">
+      <img class="rounded-circle mx-1" style="height: 50px;background-color: rgb(255, 255, 255);" src="data:image/png;base64, <%= post.author.picture %>"/>
+    </div>
+    <div class="col-9">
+      <a href="/profile/<%=post.author._id%>">
+      <%= post.author.fullname %><br/>@<%= post.author.username %></a>
+    </div>
+    </div>
+    <% if (post.title) { %>
+      <h5 class="card-title"><%= post.title %></h5>
+    <% } %>
+    </div>
+    <hr/>
+    <div class="container">
+    <p class="card-text"><%=post.content%></p>
+    </div>
+    <hr/>
+    <div class="container post-card-footer">
+      <p><span class="likes">Likes: <%=post.likes.length%></span><span class="text-muted timestamp">Posted <%=timestamp%></span></p>
+    </div>
+  </div>
+</div>

@@ -1,14 +1,25 @@
 <!DOCTYPE html>
-<!-- user home page (with feed/activity) -->
+<% const test = (posts) ? posts : [] %>
+<% const nofooter = true %>
 <html>
 <head>
     <% include head %>
-    <title><%=title%></title>
+    <title><%=user.username%>'s Profile</title>
 </head>
 <body>
     <% include nav %>
     <div class="container">
+        <div class="row">
         <h1><%=user.username%>'s Profile</h1>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+            <% for(var i = 0; i < posts.length; i++) { %>
+            <% var post = posts[i] %>
+            <% include partials/post %>
+            <% } %>
+            </div>
+        </div>
     </div>
     <% include footer %>
 </body>
