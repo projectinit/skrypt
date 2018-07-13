@@ -19,3 +19,7 @@ data/
 
 # JetBrains
 .idea
+
+# Skrypt Files
+privkey.key
+pubkey.key
