@@ -12,11 +12,12 @@ exports.login = function(req, res) {
     if (err) console.log(err);
     bcrypt.compare(pass, user.password, function (err, resd) {
       if (resd) {
+        const buf = Buffer.from(vars.privkey.exportKey('private'), 'utf8');
         const token = jwt.sign({
           id: user.id,
           email: email,
           username: user.username
-        }, vars.jwtsecret)
+        }, buf, { algorithm: 'RS256' })
         res.cookie("token", token)
         if (req.headers['content-type'] === "application/x-www-form-urlencoded") res.redirect('/')
         else res.json({status:"success", token: token})
@@ -29,8 +30,8 @@ exports.login = function(req, res) {
 };
 
 exports.verify = function(req, res) {
-  let token = null
-  if (req.body.token) token = jwt.verify(req.body.token, vars.jwtsecret)
+  const buf = Buffer.from(vars.pubkey.exportKey('public'), 'utf8');
+  let token = jwt.verify(req.body.token, buf)
   if (token) res.json({status: "success", user: token})
   else res.json({
     status: "fail"
@@ -38,15 +39,16 @@ exports.verify = function(req, res) {
 };
 
 exports.internalVerify = function(token) {
+  const buf = Buffer.from(vars.pubkey.exportKey('public'), 'utf8');
   var ttoken = null
-  if (token) ttoken = jwt.verify(token, vars.jwtsecret)
+  if (token) ttoken = jwt.verify(token, buf)
   if (ttoken) return true
   else return false
 }
 
 exports.getToken = function(token) {
   var ttoken = null
-  if (token) ttoken = jwt.verify(token, vars.jwtsecret)
+  if (token) ttoken = jwt.decode(token)
   if (ttoken) return ttoken
   else return {}
 }
