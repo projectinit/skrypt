@@ -10,7 +10,7 @@ const app = express()
 // DB Check
 mongoose.connect(vars.monoguri)
 .then(res => {
-	console.log('Successfully connected to the database!');
+	console.log('Successfully connected to the database '+vars.monoguri);
 })
 .catch(err => {
 	console.log(err);
