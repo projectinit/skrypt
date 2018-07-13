@@ -124,7 +124,9 @@ app.post('/filetest', upload.single('avatar'), function (req, res, next) {
   if (token && auth.internalVerify(token)) {
     const base64 = req.file.buffer.toString('base64')
     const user = auth.getToken(token);
-    userModel.updateOne({"_id":user.id}, {"picture":base64}, (err, raw) => {
+    userModel.updateOne({
+          "_id": user.id
+        }, {"picture": "data:image/png;base64, "+base64}, (err, raw) => {
       res.json({"status":"success"})
     })
   }
