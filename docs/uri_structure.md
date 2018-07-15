@@ -17,6 +17,7 @@ URIs that deal with authorization or data retrieval are part of the Basic API. T
 URIs that are linked to the [creation middleware](creation.md) are object creation URIs.
 
 List of object creation URIs:
+
 Object | URI
 -------|----
 User   | `/user/new`
@@ -28,6 +29,7 @@ Workplace | `/worplace/new`
 URIs that are linked to the modification middleware are object modification URIs.
 
 List of object creation URIs:
+
 Object | URI
 -------|----
 User   | `/user/{id}/edit`
