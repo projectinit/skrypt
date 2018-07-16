@@ -119,30 +119,9 @@ h1, h2, h3, h4, h5, h6 {
 .post-modal {
 
 }
-
-@media (min-width: 576px) and (max-width: 767px){
-  .avatar-container {
-    width: 8%
-  }
-  .message-container {
-    width: 92%
-  }
+.avatar-container {
+  width: 10%
 }
-
-@media (min-width: 768px) and (max-width: 1365px) {
-  .avatar-container {
-    width: 9%
-  }
-  .message-container {
-    width: 91%
-  }
-}
-
-@media (min-width: 1366px) {
-  .avatar-container {
-    width: 5%
-  }
-  .message-container {
-    width: 95%
-  }
+.message-container {
+  width: 90%
 }
