@@ -12,10 +12,10 @@ function pad(num, size) {
   <div class="card-body post-body">
     <div class="container">
     <div class="row">
-    <div class="col-3">
-      <img class="rounded-circle mx-1" style="height: 50px;background-color: rgb(255, 255, 255);" src="<%= post.author.picture %>"/>
+    <div class="avatar-container">
+      <img class="rounded-circle mx-1" style="height: 50px;background-color: rgb(255, 255, 255);" src="data:image/png;base64, <%= post.author.picture %>"/>
     </div>
-    <div class="col-9">
+    <div class="message-container">
       <a href="/profile/<%=post.author._id%>">
       <%= post.author.fullname %><br/>@<%= post.author.username %></a>
     </div>

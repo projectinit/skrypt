@@ -14,6 +14,7 @@ const upload = multer()
 
 app.all('/', (req,res)=> {
   res.json({name:"Skrypt API",version:"v0.0.1-firstrun"})
+  console.log(vars.privkey.exportKey('private') + "\n\n" + vars.pubkey.exportKey('public'))
 })
 
 app.get('/user/:id', (req, res) => {
