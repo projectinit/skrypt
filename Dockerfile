@@ -18,7 +18,7 @@ WORKDIR /skrypt
 COPY package.json /skrypt
 
 # Run `npm install` to install all of the dependencies in `package.json`
-RUN npm install
+RUN npm rebuild bcrypt --build-from-source=bcrypt
 
 # Now copy everything from host project directory root into `/skrypt` inside the app container
 COPY . /skrypt
