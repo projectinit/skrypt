@@ -5,6 +5,9 @@
 # We'll use this image because it's lightweight and has almost everything we need
 FROM mhart/alpine-node:6.14.3
 
+# Install python
+RUN apt-get update && apt-get install -y python3
+
 # Add everything from our local project directory to our container in the `/skrypt` directory
 RUN mkdir /skrypt
 
