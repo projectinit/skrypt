@@ -6,7 +6,7 @@
 FROM mhart/alpine-node:6.14.3
 
 # Install python
-RUN apt-get update && apt-get install -y python3
+RUN apt-get update && apt-get install -y build-essential && apt-get install -y python && npm install
 
 # Add everything from our local project directory to our container in the `/skrypt` directory
 RUN mkdir /skrypt
