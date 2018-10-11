@@ -49,16 +49,15 @@ services:
       - NODE_ENV=${NODE_ENV}
 
     # Mount root of host project directory to `/skrypt` directory in container
-    volumes:
-      - .:/skrypt
+    # NOTE: uncommenting the volumes config will force the container to use the
+    #       node_modules folder on the host machine. this can cause problems if
+    #       host is using a different architecture than the container
+    # volumes:
+    #   - .:/skrypt
 
     # Use port 3000 on both host and container when connecting
     ports:
       - "3000:3000"
-
-    # Create a link between mongo and app containers
-    links:
-      - skrypt_db
 
     # Start mongo container before app container (does not wait for mongo to be up and running before starting app container)
     depends_on:
