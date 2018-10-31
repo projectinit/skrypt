@@ -17,6 +17,7 @@ mongoose.connect(vars.monoguri)
         console.log('Cannot connect to the database!')
         console.log(vars.monoguri)
     });
+app.use(helmet())
 app.use(helmet.xssFilter())
 app.use(bodyParser.urlencoded({
     extended: true
