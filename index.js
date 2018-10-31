@@ -3,20 +3,21 @@ const express = require('express');
 const vars = require('./globalvars')
 const bodyParser = require('body-parser')
 const cookieParser = require('cookie-parser')
+const helmet = require('helmet');
 const port = vars.port;
-const redis = require('redis')
 const app = express()
 
 // DB Check
 mongoose.connect(vars.monoguri)
-.then(res => {
-	console.log('Successfully connected to the database '+vars.monoguri);
-})
-.catch(err => {
-	console.log(err);
-    console.log('Cannot connect to the database!')
-    console.log(vars.monoguri)
-});
+    .then(res => {
+        console.log('Successfully connected to the database ' + vars.monoguri);
+    })
+    .catch(err => {
+        console.log(err);
+        console.log('Cannot connect to the database!')
+        console.log(vars.monoguri)
+    });
+app.use(helmet.xssFilter())
 app.use(bodyParser.urlencoded({
     extended: true
 }));
